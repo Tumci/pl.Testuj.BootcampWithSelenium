@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="My first suit test">
+    <test name="My first test name">
+        <parameter name="userName" value="Kamil"/>
+        <classes>
+            <class name="testPackage.Test3_paramitersFromXML"/>
+            <class name="testPackage.Test2">
+                <methods>
+                    <include name="CalculateMultiple"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="My second test name">
+        <parameter name="userName" value="Dorota"/>
+        <classes>
+            <class name="testPackage.Test3_paramitersFromXML"/>
+            <class name="testPackage.Test4_paramitersFromDataProvider"/>
+        </classes>
+    </test>
+<!--    <test name="Smile">-->
+<!--        <classes>-->
+<!--            <class name="testPackage.Test4_paramitersFromDataProvider"></class>-->
+<!--            &lt;!&ndash; <class name="testPackage.Test3_paramitersFromXML"></class>&ndash;&gt;-->
+<!--        </classes>-->
+<!--    </test>-->
+</suite>

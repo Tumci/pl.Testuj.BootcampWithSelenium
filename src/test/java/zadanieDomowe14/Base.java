@@ -1,0 +1,28 @@
+package zadanieDomowe14;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
+
+public class Base {
+WebDriver driver;
+
+    @BeforeClass
+    public void SetUp(){
+        System.setProperty("webdriver.chrome.driver","E:\\Projekty_IT\\Narzedzia\\chromdriver\\chromedriver.exe");
+        driver = new ChromeDriver();
+    }
+
+    @AfterTest
+    public void tearDown(){
+        driver.close();
+        driver.quit();
+    }
+
+    static void sleepFor(int millis){
+        try {
+            Thread.sleep(millis);
+        }catch (Exception e){}
+    }
+}
