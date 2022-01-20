@@ -1,4 +1,4 @@
-package zadanieDomowe14;
+package webinar14_homework;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
