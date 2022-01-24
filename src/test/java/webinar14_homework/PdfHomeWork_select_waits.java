@@ -1,10 +1,15 @@
 package webinar14_homework;
 
+import org.asynchttpclient.util.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 
 public class PdfHomeWork_select_waits extends Base{
     @Test
@@ -31,7 +36,7 @@ public class PdfHomeWork_select_waits extends Base{
         System.out.println("Ilość obrazów na stronie -> " + imgCount);
     }
 
-    @Test
+    @Test(dependsOnMethods = {"incorrectLoginOrangeHrmLive_task4"})
     public void correctLoginOrangeHrmLive_task3(){
 // Napisz test składający się z następujących kroków:
 // a. Wejdź na stronę https://opensource-demo.orangehrmlive.com/
@@ -72,13 +77,14 @@ public class PdfHomeWork_select_waits extends Base{
 
         //configuration
         driver.get("https://opensource-demo.orangehrmlive.com");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         //body
-        WebElement txtUsername = driver.findElement(By.id("txtUsername"));
+        WebElement txtUsername = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("txtUsername")));
         txtUsername.clear();
         txtUsername.sendKeys("WrongUsername");
 
-        WebElement txtPassword = driver.findElement(By.id("txtPassword"));
+        WebElement txtPassword = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("txtPassword")));
         txtPassword.clear();
         txtPassword.sendKeys("WrongPassword");
 
@@ -98,22 +104,34 @@ public class PdfHomeWork_select_waits extends Base{
 //        c. Kliknij 'Buy Now'
 //        d. Sprawdź, czy wyliczona cena się zgadza
 
+        //configuration
+        String selectItemNumber = "3";
+        String purchaseValue = Integer.toString(20 * Integer.parseInt(selectItemNumber));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+
         driver.get("http://demo.guru99.com/payment-gateway/index.php");
         driver.manage().window().maximize();
-        sleepFor(4000);
 
-        // nie wiem czemu w to nie klika!! --------------- pop up
-        driver.findElement(By.id("denyAll")).click();
-        sleepFor(1000);
+        WebElement waitForIFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("gdpr-consent-notice")));
+        driver.switchTo().frame(waitForIFrame);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("denyAll"))).click();
         driver.findElement(By.cssSelector("button[class*='okButton']")).click();
+        driver.switchTo().defaultContent();
 
+        //body
         Select drpQuantity = new Select(driver.findElement(By.name("quantity")));
-        drpQuantity.selectByValue("3");
-
-        sleepFor(2000);
-
+        drpQuantity.selectByValue(selectItemNumber);
         driver.findElement(By.cssSelector("input[type='submit']")).click();
 
-        sleepFor(2000);
+        String amountPrice = driver.findElement(By.cssSelector("form > div.row>div>font[color='red']")).getText();
+
+        //Assert
+        Assert.assertTrue(amountPrice.contains(purchaseValue), "Displayed amount value is -> "+ amountPrice + " - selected item are - > "+ selectItemNumber);
+
+        //Multiassertions in JUnit
+//        Assertions.assertAll(
+//                () -> assertEquals(expectedURL, actualURL),
+//                () -> assertEquals(expectedTitle, actualTitle)
+//        );
     }
 }
