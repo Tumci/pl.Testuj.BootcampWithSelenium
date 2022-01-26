@@ -1,6 +1,5 @@
 package webinar14_homework;
 
-import org.asynchttpclient.util.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -8,27 +7,35 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utilities.Base;
 
 import java.time.Duration;
 
-public class PdfHomeWork_select_waits extends Base{
+public class PdfHomeWork_select_waits extends Base {
     @Test
-    public void titlePageTestujPl_task1(){
+    public void titlePageTestujPl_task1() {
 //  Napisz test, który wypisze w konsoli tytuł strony
 //  https://testuj.pl/
 
+        //Configuration
         driver.get("https://testuj.pl");
+
+        //Body
         String title = driver.getTitle();
         System.out.println(title);
     }
+
     @Test
-    public void howManyLinksAndImg_task2(){
+    public void howManyLinksAndImg_task2() {
 //  Napisz test składający się z następujących kroków:
 //  a. Wejdź na stronę: https://www.bbc.com
 //  b. Wyświetl w konsoli ilość dostępnych linków na stronie.
 //  c. Wyświetl w konsoli ilość dostępnych obrazków na stronie
 
+        //Configuration
         driver.get("https://www.bbc.com");
+
+        //Body
         int linkCount = driver.findElements(By.tagName("a")).size();
         int imgCount = driver.findElements(By.tagName("img")).size();
 
@@ -37,7 +44,7 @@ public class PdfHomeWork_select_waits extends Base{
     }
 
     @Test(dependsOnMethods = {"incorrectLoginOrangeHrmLive_task4"})
-    public void correctLoginOrangeHrmLive_task3(){
+    public void correctLoginOrangeHrmLive_task3() {
 // Napisz test składający się z następujących kroków:
 // a. Wejdź na stronę https://opensource-demo.orangehrmlive.com/
 // b. W polu 'Username' wpisz: Admin.
@@ -45,11 +52,11 @@ public class PdfHomeWork_select_waits extends Base{
 // d. Kliknij przycisk Login.
 // e. Upewnij się, że użytkownik się zalogował.
 
-        //configuration
+        //Configuration
         String correctUrl = "https://opensource-demo.orangehrmlive.com/index.php/dashboard";
         driver.get("https://opensource-demo.orangehrmlive.com");
 
-        //body
+        //Body
         WebElement txtUsername = driver.findElement(By.id("txtUsername"));
         txtUsername.clear();
         txtUsername.sendKeys("Admin");
@@ -62,12 +69,12 @@ public class PdfHomeWork_select_waits extends Base{
 
         String url = driver.getCurrentUrl();
 
-        // Assert
+        // Assertion
         Assert.assertEquals(url, correctUrl, "User is not correct login. This url was show up -> " + url);
     }
 
     @Test
-    public void incorrectLoginOrangeHrmLive_task4(){
+    public void incorrectLoginOrangeHrmLive_task4() {
 //        Napisz test składający się z następujących kroków:
 //        a. Wejdź na stronę https://opensource-demo.orangehrmlive.com/
 //        b. W polu 'Username' wpisz: WrongUsername.
@@ -75,11 +82,11 @@ public class PdfHomeWork_select_waits extends Base{
 //        d. Kliknij przycisk Login.
 //        e. Sprawdź, czy wyświetlił się komunikat o błędnych danych logowania - Invalid credentials.
 
-        //configuration
+        //Configuration
         driver.get("https://opensource-demo.orangehrmlive.com");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        //body
+        //Body
         WebElement txtUsername = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("txtUsername")));
         txtUsername.clear();
         txtUsername.sendKeys("WrongUsername");
@@ -92,19 +99,20 @@ public class PdfHomeWork_select_waits extends Base{
 
         WebElement spanMessage = driver.findElement(By.id("spanMessage"));
 
-        //Assert
+        //Assertion
         Assert.assertTrue(spanMessage.isDisplayed(), "Span message should be visible!");
-        Assert.assertEquals(spanMessage.getText(), "Invalid credentials", "Text should be 'Invalid credentials' but is -> "+ spanMessage.getText());
+        Assert.assertEquals(spanMessage.getText(), "Invalid credentials", "Text should be 'Invalid credentials' but is -> " + spanMessage.getText());
     }
+
     @Test
-    public void priceFor3ItemsIsCorrect_task5(){
+    public void priceFor3ItemsIsCorrect_task5() {
 //        Napisz następujący test
 //        a. Wejdź na stronę http://demo.guru99.com/payment-gateway/index.php
 //        b. Wybierz trzy produkty
 //        c. Kliknij 'Buy Now'
 //        d. Sprawdź, czy wyliczona cena się zgadza
 
-        //configuration
+        //Configuration
         String selectItemNumber = "3";
         String purchaseValue = Integer.toString(20 * Integer.parseInt(selectItemNumber));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
@@ -118,7 +126,7 @@ public class PdfHomeWork_select_waits extends Base{
         driver.findElement(By.cssSelector("button[class*='okButton']")).click();
         driver.switchTo().defaultContent();
 
-        //body
+        //Body
         Select drpQuantity = new Select(driver.findElement(By.name("quantity")));
         drpQuantity.selectByValue(selectItemNumber);
         driver.findElement(By.cssSelector("input[type='submit']")).click();
@@ -126,7 +134,7 @@ public class PdfHomeWork_select_waits extends Base{
         String amountPrice = driver.findElement(By.cssSelector("form > div.row>div>font[color='red']")).getText();
 
         //Assert
-        Assert.assertTrue(amountPrice.contains(purchaseValue), "Displayed amount value is -> "+ amountPrice + " - selected item are - > "+ selectItemNumber);
+        Assert.assertTrue(amountPrice.contains(purchaseValue), "Displayed amount value is -> " + amountPrice + " - selected item are - > " + selectItemNumber);
 
         //Multiassertions in JUnit
 //        Assertions.assertAll(
