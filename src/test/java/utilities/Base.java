@@ -1,4 +1,4 @@
-package webinar14_homework;
+package utilities;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -20,7 +20,7 @@ public WebDriver driver;
         driver.quit();
     }
 
-    static void sleepFor(int millis){
+    public static void sleepFor(int millis){
         try {
             Thread.sleep(millis);
         }catch (Exception e){}
